@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /mission2000-results/{resultId} {
+      allow read: if true;
+      allow create, update: if
+        request.resource.data.keys().hasAll([
+          'classNo', 'team', 'writer', 'firstTime', 'secondTime',
+          'firstStrategy', 'problem', 'aiAdvice', 'chosenStrategy',
+          'reason', 'reflection', 'createdAt'
+        ]) &&
+        request.resource.data.classNo is int &&
+        request.resource.data.classNo >= 1 && request.resource.data.classNo <= 7 &&
+        request.resource.data.team is string && request.resource.data.team.size() <= 15 &&
+        request.resource.data.writer is string && request.resource.data.writer.size() <= 12 &&
+        request.resource.data.firstTime is int && request.resource.data.firstTime >= 0 && request.resource.data.firstTime <= 1800 &&
+        request.resource.data.secondTime is int && request.resource.data.secondTime >= 0 && request.resource.data.secondTime <= 1800 &&
+        request.resource.data.firstStrategy.size() <= 150 &&
+        request.resource.data.problem.size() <= 180 &&
+        request.resource.data.aiAdvice.size() <= 180 &&
+        request.resource.data.chosenStrategy.size() <= 180 &&
+        request.resource.data.reason.size() <= 180 &&
+        request.resource.data.reflection.size() <= 200;
+      allow delete: if false;
+    }
+  }
+}

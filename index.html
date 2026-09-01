@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101827" />
+  <title>MISSION : 2,000</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav wrap">
+      <button class="brand" data-view="home"><span>MISSION</span> 2,000</button>
+      <div class="nav-actions">
+        <button class="nav-button" data-view="classes">반 선택</button>
+        <button class="nav-button" data-view="guide">수업 안내</button>
+      </div>
+    </nav>
+    <div class="hero-content wrap">
+      <p class="eyebrow">SMART JUMP ROPE × AI</p>
+      <h1>우리 모둠의 기록을<br><em>단축하라!</em></h1>
+      <p class="hero-copy">생각하고, 뛰고, 분석하고, AI의 조언을 판단한 뒤 다시 도전합니다.</p>
+      <button class="primary large" data-view="classes">우리 반 입장하기 <span>→</span></button>
+    </div>
+    <div class="process wrap" aria-label="수업 과정">
+      <span>전략</span><b>→</b><span>1차 도전</span><b>→</b><span>분석</span><b>→</b><span>AI 활용</span><b>→</b><span>2차 도전</span><b>→</b><span>검증</span>
+    </div>
+  </header>
+
+  <main id="app" class="wrap" tabindex="-1"></main>
+
+  <template id="home-template">
+    <section class="intro-grid section">
+      <article class="mission-card highlight"><span class="number">2,000</span><h2>오늘의 미션</h2><p>1차 1,000회와 2차 1,000회의 기록을 비교하고 변화의 원인을 설명합니다.</p></article>
+      <article class="mission-card"><span class="icon">⌁</span><h2>스마트 줄넘기</h2><p>우리 모둠의 수행 횟수와 시간을 정확하게 측정합니다.</p></article>
+      <article class="mission-card"><span class="icon">AI</span><h2>ChatGPT</h2><p>정답을 대신 정하지 않습니다. 우리 모둠에 맞는 전략을 찾도록 돕습니다.</p></article>
+    </section>
+  </template>
+
+  <template id="classes-template">
+    <section class="section compact">
+      <div class="section-head"><div><p class="eyebrow dark">SELECT YOUR CLASS</p><h2>우리 반을 선택하세요</h2></div><p>다른 반의 기록을 수정하지 않도록<br>반을 정확히 확인하세요.</p></div>
+      <div id="class-grid" class="class-grid"></div>
+    </section>
+  </template>
+
+  <template id="class-template">
+    <section class="section compact">
+      <button class="back" data-view="classes">← 반 선택으로</button>
+      <div class="class-title"><div><p class="eyebrow dark">MISSION BOARD</p><h2 id="class-name"></h2></div><button id="refresh-button" class="secondary">기록 새로고침</button></div>
+      <div class="tabs"><button class="tab active" data-tab="submit">결과 입력</button><button class="tab" data-tab="results">우리 반 결과판</button></div>
+      <div id="tab-content"></div>
+    </section>
+  </template>
+
+  <template id="form-template">
+    <form id="result-form" class="result-form">
+      <div class="notice"><strong>기억하세요!</strong> AI의 답을 그대로 쓰지 말고, 우리 모둠에 맞는 전략인지 판단한 뒤 선택하세요.</div>
+      <fieldset><legend><span>01</span> 모둠 정보</legend><div class="form-grid two"><label>모둠명 또는 번호<input name="team" required maxlength="15" placeholder="예: 3모둠"></label><label>기록자 이름<input name="writer" required maxlength="12" placeholder="예: 김체육"></label></div></fieldset>
+      <fieldset><legend><span>02</span> 1차 도전 분석</legend><div class="form-grid two"><label>1차 기록(분)<input name="firstMin" type="number" min="0" max="30" required inputmode="numeric" placeholder="4"></label><label>1차 기록(초)<input name="firstSec" type="number" min="0" max="59" required inputmode="numeric" placeholder="35"></label></div><label>우리 모둠의 1차 전략<textarea name="firstStrategy" required maxlength="150" placeholder="수행 순서, 교대, 속도 등을 적으세요."></textarea></label><label>잘된 점과 문제점<textarea name="problem" required maxlength="180" placeholder="수행 중 관찰한 사실을 구체적으로 적으세요."></textarea></label></fieldset>
+      <fieldset><legend><span>03</span> AI 조언을 판단하기</legend><label>AI가 제안한 핵심 전략<textarea name="aiAdvice" required maxlength="180" placeholder="AI의 제안을 짧게 요약하세요."></textarea></label><label>우리 모둠이 실제로 선택·수정한 전략<textarea name="chosenStrategy" required maxlength="180" placeholder="그대로 복사하지 말고 실제 적용할 내용만 적으세요."></textarea></label><label>이 전략을 선택한 이유<textarea name="reason" required maxlength="180" placeholder="우리 모둠의 문제점과 연결하여 적으세요."></textarea></label></fieldset>
+      <fieldset><legend><span>04</span> 2차 도전 결과</legend><div class="form-grid two"><label>2차 기록(분)<input name="secondMin" type="number" min="0" max="30" required inputmode="numeric" placeholder="4"></label><label>2차 기록(초)<input name="secondSec" type="number" min="0" max="59" required inputmode="numeric" placeholder="10"></label></div><label>기록이 달라진 이유<textarea name="reflection" required maxlength="200" placeholder="전략이 효과가 있었는지, 왜 그렇게 판단했는지 적으세요."></textarea></label></fieldset>
+      <label class="agree"><input type="checkbox" required> 모둠원과 함께 내용을 확인했습니다.</label>
+      <button class="primary submit" type="submit">우리 모둠 결과 게시하기</button>
+      <p id="form-message" class="form-message" role="status"></p>
+    </form>
+  </template>
+
+  <template id="results-template">
+    <div><div id="summary" class="summary"></div><div id="results-list" class="results-list"><div class="empty">기록을 불러오는 중입니다.</div></div></div>
+  </template>
+
+  <template id="guide-template">
+    <section class="section compact guide">
+      <button class="back" data-view="home">← 처음으로</button><p class="eyebrow dark">CLASS GUIDE</p><h2>MISSION : 2,000 참여 방법</h2>
+      <ol class="guide-list"><li><b>우리끼리 전략 세우기</b><span>AI 없이 1차 전략을 정합니다.</span></li><li><b>1차 1,000회 도전</b><span>스마트 줄넘기로 시간과 횟수를 측정합니다.</span></li><li><b>먼저 분석하기</b><span>잘된 점과 문제점을 우리 모둠이 직접 찾습니다.</span></li><li><b>AI 조언 판단하기</b><span>ChatGPT의 제안 중 실제로 적용할 전략을 선택·수정합니다.</span></li><li><b>2차 1,000회 도전</b><span>수정한 전략을 적용하고 효과를 확인합니다.</span></li><li><b>결과 공유하기</b><span>기록 변화보다 변화의 이유를 중요하게 기록합니다.</span></li></ol>
+      <div class="rule-box"><h3>핵심 규칙</h3><p>모든 모둠원이 참여합니다. 교사의 교대 신호를 따릅니다. 기본 뛰기만 사용하며, 안전거리와 이동 방향을 지킵니다.</p></div>
+    </section>
+  </template>
+
+  <footer><div class="wrap"><b>MISSION : 2,000</b><span>스마트 줄넘기 협력 문제해결 수업</span></div></footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
